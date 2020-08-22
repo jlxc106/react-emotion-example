@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 const Button = styled.button`
   padding: 32px;
-  background-color: hotpink;
+  background-color: ${props => props.theme.colors.primary};
   font-size: 24px;
   border-radius: 4px;
   color: black;

@@ -1,51 +1,73 @@
 import React, { useState } from "react";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
+import { ThemeProvider } from "emotion-theming";
 
-import logo from "./logo.svg";
 import "./App.css";
 import Button from "./styledItems/button";
 
-const color = "green";
+
+// styled
+// composition
+// media queries
 
 function App() {
   const [toBe, setToBe] = useState(false);
+  const breakpoints = [576, 768, 992, 1200];
+
+  const mq = breakpoints.map((bp) => `@media (min-width: ${bp}px)`);
+
+  const theme = {
+    colors: {
+      primary: "hotpink",
+      secondary: "green",
+    },
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Button
-          onClick={() => {
-            console.log("setToBe iz true");
-            setToBe(true);
-          }}
-        >
-          Set To Be
-        </Button>
+    <ThemeProvider theme={theme}>
+      {/* Object */}
+      <div
+        className="App"
+        css={(theme) => ({
+          padding: "10px",
+          border: `1px solid ${theme.colors.primary}`,
+        })}
+      >
+        {/* string */}
         <p
           css={css`
             padding: 32px;
-            background-color: hotpink;
+            background-color: ${theme.colors.primary};
             font-size: 24px;
-            border-radius: 4px;
+            border-radius: 5px;
             &:hover {
-              color: ${toBe ? color : "black"};
+              color: ${toBe ? theme.colors.secondary : "black"};
+            }
+            ${mq[0]} {
+              color: gray;
+            }
+            ${mq[1]} {
+              color: white;
             }
           `}
         >
-          Edit <code>src/App.js</code> and save to reload.
+          Emotions are just a part of life.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Button
+          // override default color
+          css={css`
+            color: ${theme.colors.secondary};
+          `}
+          onClick={() => {
+            setToBe(true);
+          }}
+          children="Set To Be"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          {/* Set To Be */}
+        </Button>
+      </div>
+    </ThemeProvider>
   );
 }
 
